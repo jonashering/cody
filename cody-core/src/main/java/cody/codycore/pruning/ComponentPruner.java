@@ -69,14 +69,14 @@ public class ComponentPruner {
         this.visited.set(vertex);
         aggregator.add(vertex);
 
-        for (int neighbour : this.getComplementingNeighbours(vertex)) {
+        for (int neighbour : this.getComplementNeighbours(vertex)) {
             if (!this.visited.get(neighbour)) {
                 this.searchComponentsCallRec(aggregator, neighbour, colouring + 1);
             }
         }
     }
 
-    protected List<Integer> getComplementingNeighbours(final int vertex) {
+    protected List<Integer> getComplementNeighbours(final int vertex) {
         return IntStream
                 .range(0, this.graph.size())
                 .filter(i -> i != vertex)

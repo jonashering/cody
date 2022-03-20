@@ -44,7 +44,7 @@ public class CliquePruner extends ComponentPruner {
      */
     private void searchCliques() {
         this.searchCliquesCallRec(this.intermediateResultSet, new ArrayList<>(),
-                IntStream.rangeClosed(0, this.graph.size() - 1).boxed().collect(Collectors.toList()),
+                IntStream.range(0, this.graph.size()).boxed().collect(Collectors.toList()),
                 new ArrayList<>());
     }
 

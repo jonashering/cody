@@ -84,6 +84,11 @@ public class Validator {
                 this.calculateSupport(BufferFastAggregation.and(pliList)));
     }
 
+    /**
+     * Get a 2D adjacency matrix with the support for unary Codys between all columns
+     *
+     * @return a list of lists (all same length) with the support as a double
+     */
     public List<List<Double>> getGraphView() {
         return this.supports;
     }
