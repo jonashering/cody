@@ -22,6 +22,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 public class Preprocessor {
@@ -125,8 +127,11 @@ public class Preprocessor {
         settings.getFormat().setDelimiter(this.configuration.getDelimiter());
         settings.getFormat().setQuote(this.configuration.getQuoteChar());
         settings.setNumberOfRowsToSkip(this.configuration.getSkipLines());
+        settings.setNumberOfRecordsToRead(this.configuration.getRowLimit());
         settings.setNullValue(""); // empty cells will be converted to String "" instead of being null
         settings.setEmptyValue("");
+        if (this.configuration.getColLimit() != -1)
+            settings.selectIndexes(IntStream.range(0, this.configuration.getColLimit()).boxed().toArray(Integer[]::new));
 
         CsvParser parser = new CsvParser(settings);
         parser.beginParsing(reader);

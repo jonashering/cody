@@ -18,6 +18,12 @@ public class Configuration {
     @Parameter(names = {"--skip"}, description = "Number of lines to skip when reading the dataset")
     int skipLines = 0;
 
+    @Parameter(names = {"--row-limit"}, description = "Limit number of lines read from dataset")
+    int rowLimit = -1;
+
+    @Parameter(names = {"--col-limit"}, description = "Limit number of columns read from dataset")
+    int colLimit = -1;
+
     @Parameter(names = {"--no-header"}, description = "First line already contains data, column names are indices")
     boolean noHeader = false;
 

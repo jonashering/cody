@@ -60,7 +60,7 @@ public class CliquePruner extends ComponentPruner {
         for (int n : this.getAllNeighbours(!candidates.isEmpty() ? candidates.get(0) : excluded.get(0)))
             pivotedCandidates.remove(Integer.valueOf(n));
 
-        for (int i : ImmutableList.copyOf(pivotedCandidates)) {
+        for (int i : pivotedCandidates) {
             List<Integer> newClique = new ArrayList<>(clique);
             newClique.add(i);
 
