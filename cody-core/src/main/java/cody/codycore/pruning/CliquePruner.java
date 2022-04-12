@@ -25,13 +25,13 @@ public class CliquePruner extends ComponentPruner {
     @Override
     public void run() {
         this.searchComponents();
-        log.info("Found {} components while colouring vertices", this.intermediateResultSet.size());
+        log.trace("Found {} components while colouring vertices", this.intermediateResultSet.size());
 
         // clear resultSet found during vertex coloring
         this.intermediateResultSet.clear();
         this.searchCliques();
         this.buildCandidates();
-        log.info("Found {} optimistic candidates", this.resultSet.size());
+        log.trace("Found {} optimistic candidates", this.resultSet.size());
     }
 
     /**

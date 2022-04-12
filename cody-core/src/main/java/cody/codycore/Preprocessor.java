@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -30,9 +32,10 @@ public class Preprocessor {
 
     private final Configuration configuration;
     private final Object2IntLinkedOpenHashMap<IntList> rowDeduplicator;
-    private List<MutableRoaringBitmap> columnPlisMutable;
+    public List<MutableRoaringBitmap> columnPlisMutable;
     private String[] columnIndexToNameMapping;
-    private int nRowsDistinct;
+    public int nRowsDistinct;
+    public int numNulls = 0;
 
     /**
      * Contains a PLIs per column, a bit in PLI is set to true if cell for that row is null
@@ -96,12 +99,17 @@ public class Preprocessor {
         this.transformColumns();
         log.info("Deduplicated {} rows to {}, {} columns to {}", this.nRows, this.nRowsDistinct,
                 this.columnPlisMutable.size(), this.columnPlis.size());
+        //System.out.println("DS:" + numNulls / ((double) nRows * columnPlisMutable.size()) + "," + Arrays.toString
+        // (columnPlisMutable.stream().mapToDouble(i -> i.getCardinality() / (double) nRows).toArray()));
     }
 
     private void addRow(String[] row) {
         IntList nullCols = new IntArrayList();
         for (int i = 0; i < row.length; i++)
-            if (row[i].equals(this.configuration.getNullValue())) nullCols.add(i);
+            if (row[i].equals(this.configuration.getNullValue())){
+                nullCols.add(i);
+                numNulls++;
+            }
 
         if (this.rowDeduplicator.containsKey(nullCols)) {
             this.rowDeduplicator.addTo(nullCols, 1);
@@ -132,6 +140,12 @@ public class Preprocessor {
         settings.setEmptyValue("");
         if (this.configuration.getColLimit() != -1)
             settings.selectIndexes(IntStream.range(0, this.configuration.getColLimit()).boxed().toArray(Integer[]::new));
+        if (this.configuration.getColLimitRandom() != -1) {
+            List<Integer> indices =
+                    IntStream.range(0, this.configuration.getColLimitRandomMax()).boxed().collect(Collectors.toList());
+            Collections.shuffle(indices);
+            settings.selectIndexes(indices.stream().limit(configuration.getColLimitRandom()).toArray(Integer[]::new));
+        }
 
         CsvParser parser = new CsvParser(settings);
         parser.beginParsing(reader);

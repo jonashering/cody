@@ -42,9 +42,9 @@ public class ComponentPruner {
      */
     public void run() {
         this.searchComponents();
-        log.info("Found {} components while colouring vertices", this.intermediateResultSet.size());
+        log.trace("Found {} components while colouring vertices", this.intermediateResultSet.size());
         this.buildCandidates();
-        log.info("Found {} optimistic candidates", this.resultSet.size());
+        log.trace("Found {} optimistic candidates", this.resultSet.size());
     }
 
     /**

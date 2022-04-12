@@ -24,6 +24,14 @@ public class Configuration {
     @Parameter(names = {"--col-limit"}, description = "Limit number of columns read from dataset")
     int colLimit = -1;
 
+    @Parameter(names = {"--col-limit-random"}, description = "Limit number of columns read from dataset, selected " +
+            "randomly")
+    int colLimitRandom = -1;
+
+    @Parameter(names = {"--col-limit-random-max"}, description = "Limit number of columns read from dataset, selected" +
+            "randomly")
+    int colLimitRandomMax = -1;
+
     @Parameter(names = {"--no-header"}, description = "First line already contains data, column names are indices")
     boolean noHeader = false;
 
