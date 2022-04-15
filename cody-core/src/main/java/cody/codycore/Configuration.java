@@ -48,6 +48,9 @@ public class Configuration {
     @Parameter(names = {"--no-cliques"}, description = "Disable clique search for approximate Cody discovery")
     boolean noCliqueSearch = false;
 
+    @Parameter(names = {"--no-dedup"}, description = "Disable deduplication")
+    boolean noDedup = false;
+
     @Parameter(names = {"--help", "-h"}, description = "Show this help page", help = true)
     boolean help;
 

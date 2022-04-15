@@ -13,6 +13,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.roaringbitmap.RoaringBitmap;
 import org.roaringbitmap.buffer.ImmutableRoaringBitmap;
 import org.roaringbitmap.buffer.MutableRoaringBitmap;
 
@@ -97,7 +98,7 @@ public class Preprocessor {
 
         this.transformRows();
         this.transformColumns();
-        log.info("Deduplicated {} rows to {}, {} columns to {}", this.nRows, this.nRowsDistinct,
+        log.trace("Deduplicated {} rows to {}, {} columns to {}", this.nRows, this.nRowsDistinct,
                 this.columnPlisMutable.size(), this.columnPlis.size());
         //System.out.println("DS:" + numNulls / ((double) nRows * columnPlisMutable.size()) + "," + Arrays.toString
         // (columnPlisMutable.stream().mapToDouble(i -> i.getCardinality() / (double) nRows).toArray()));
@@ -111,7 +112,7 @@ public class Preprocessor {
                 numNulls++;
             }
 
-        if (this.rowDeduplicator.containsKey(nullCols)) {
+        if (this.rowDeduplicator.containsKey(nullCols) && !configuration.noDedup) {
             this.rowDeduplicator.addTo(nullCols, 1);
         } else {
             this.rowDeduplicator.put(nullCols, 1);
@@ -158,6 +159,17 @@ public class Preprocessor {
                 this.createDuplicateColumnMapping();
 
         this.columnPlis = ImmutableList.copyOf(deduplicator.keySet());
+
+        if (configuration.noDedup) {
+            List<ImmutableRoaringBitmap> newList = new ArrayList<>();
+            this.columnPlis.clear();
+            for (ImmutableRoaringBitmap bm : deduplicator.keySet()) {
+                for (int i : deduplicator.get(bm))
+                    newList.add(bm);
+            }
+            this.columnPlis = ImmutableList.copyOf(newList);
+        }
+
         // FIXME: figure out how to collect values as List of Lists
         List<List<Integer>> mapper = new ArrayList<>(this.columnPlis.size());
         for (ImmutableRoaringBitmap b : this.columnPlis)

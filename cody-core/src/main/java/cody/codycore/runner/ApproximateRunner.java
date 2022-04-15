@@ -102,6 +102,7 @@ public class ApproximateRunner extends BaseRunner {
             log.trace("{}", c);
 
         System.out.println(configuration.getPath() + "," +
+                (0.000001f * (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())) + "," +
                            configuration.getMinSupport() + "," +
                            configuration.getNullValue() + "," +
                            preprocessor.getNRows() + "," +
