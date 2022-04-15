@@ -59,7 +59,7 @@ public class ExactRunner extends BaseRunner {
 
         log.trace("ResultSet with {} Codys:", this.getResultSet().size());
         for (CheckedColumnCombination c : this.getResultSet())
-            log.info("{}", c);
+            log.trace("{}", c);
 
         System.out.println(
                 configuration.getPath() + "," +

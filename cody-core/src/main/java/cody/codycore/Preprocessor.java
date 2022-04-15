@@ -115,10 +115,12 @@ public class Preprocessor {
         if (this.rowDeduplicator.containsKey(nullCols) && !configuration.noDedup) {
             this.rowDeduplicator.addTo(nullCols, 1);
         } else {
-            this.rowDeduplicator.put(nullCols, 1);
             for (int i : nullCols)
                 this.columnPlisMutable.get(i).add(this.nRowsDistinct);
             this.nRowsDistinct++;
+            if (configuration.noDedup)
+                nullCols.add(this.nRowsDistinct + 100);
+            this.rowDeduplicator.put(nullCols, 1);
         }
     }
 
@@ -162,7 +164,6 @@ public class Preprocessor {
 
         if (configuration.noDedup) {
             List<ImmutableRoaringBitmap> newList = new ArrayList<>();
-            this.columnPlis.clear();
             for (ImmutableRoaringBitmap bm : deduplicator.keySet()) {
                 for (int i : deduplicator.get(bm))
                     newList.add(bm);

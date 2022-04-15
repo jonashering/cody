@@ -35,6 +35,7 @@ public class EvaluationRunner {
 
         for (DatasetConfig c : datasets) {
             for (double supp : minSupps) {
+                if (c.path().equals("/home/jonas.hering/datasets/kurzgutachten.csv") && supp <= 0.95) continue;
                 for (int i = 0; i < numRuns; i++) {
                     Configuration config = new Configuration();
                     config.setPath(c.path());
@@ -308,7 +309,7 @@ public class EvaluationRunner {
                     config.setNullValue(c.nullVal());
                     config.setRowLimit(c.limit());
                     config.setMinSupport(supp);
-                    config.setNoDedup(true);
+                    config.setNoDedup(false);
 
                     ApproximateRunner runner = new ApproximateRunner(config);
                     runner.run();
@@ -321,17 +322,17 @@ public class EvaluationRunner {
     public static void main(String[] args) {
         System.out.println("path,memory,support,nullValue,rows,rowsD,cols,colsD,result,candidates,preprocessor," +
                 "validator,pruner,traverser,postprocessor,total");
-        if (args[1].equals("all")) {
+        if (args[0].equals("all")) {
             runAllDatasets();
-        } else if (args[1].equals("rows")) {
+        } else if (args[0].equals("rows")) {
             runRows();
-        } else if (args[1].equals("cols")) {
+        } else if (args[0].equals("cols")) {
             runCols();
-        } else if (args[1].equals("dedup")) {
+        } else if (args[0].equals("dedup")) {
             runDedup();
-        } else if (args[1].equals("clique")) {
+        } else if (args[0].equals("clique")) {
             runCliqueVsComponent();
-        } else if (args[1].equals("supp")) {
+        } else if (args[0].equals("supp")) {
             runSupport();
         } else {
             System.out.println("UNKNOWN GOAL");
