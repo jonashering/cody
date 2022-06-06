@@ -95,22 +95,6 @@ public class ApproximateRunner extends BaseRunner {
 
         log.info("ResultSet with {} Codys:", this.resultSet.size());
         for (CheckedColumnCombination c : this.resultSet)
-            log.info("{}", c);
-    }
-
-    public static void main(String[] args) {
-        Configuration config = new Configuration();
-        config.setPath("/home/jonas/downloads/NYPD_Complaint_Data_Historic.csv");
-        //config.setPath("/home/jonas/downloads/105774672_20210108153400_combine.csv");
-        //config.setPath("/home/jonas/thesis/cd-generator/dataset_sparkasse/objekte.csv");
-        //config.setDelimiter(',');
-        //config.setNullValue("Null");
-        config.setNoCliqueSearch(false);
-        config.setMinSupport(0.95);
-
-        ApproximateRunner runner = new ApproximateRunner(config);
-        runner.run();
+            log.info("{}", c.toString(preprocessor.getColumnIndexToNameMapping()));
     }
 }
-
-// INTERESTING nc voters left={73}, right={23, 24})

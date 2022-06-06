@@ -31,7 +31,6 @@ public class Preprocessor {
     private final Configuration configuration;
     private final Object2IntLinkedOpenHashMap<IntList> rowDeduplicator;
     private List<MutableRoaringBitmap> columnPlisMutable;
-    private String[] columnIndexToNameMapping;
     private int nRowsDistinct;
 
     /**
@@ -46,7 +45,10 @@ public class Preprocessor {
      */
     @Getter private List<List<Integer>> columnIndexToDuplicatesMapping;
 
-
+    /**
+     * Contains mapping from column indices to names
+     */
+    @Getter private String[] columnIndexToNameMapping;
     /**
      * Indicates the total number of rows (also counting duplicates)
      */
@@ -199,27 +201,5 @@ public class Preprocessor {
     private void transformRows() {
         // Actual deduplication happens in addRow(), setting results properly here
         this.rowCounts = this.rowDeduplicator.values().toIntArray();
-    }
-
-    /**
-     * Pretty print a candidate (i.e. map indices to column names and revert deduplication)
-     *
-     * @param c ColumnCombination to pretty print
-     * @return String representation
-     */
-    public String prettyPrint(@NonNull ColumnCombination c) {
-        // TODO
-        return c.toString();
-    }
-
-    /**
-     * Pretty print a candidate (i.e. map indices to column names and revert deduplication)
-     *
-     * @param c CheckedColumnCombination to pretty print
-     * @return String representation
-     */
-    public String prettyPrint(@NonNull CheckedColumnCombination c) {
-        // TODO
-        return this.prettyPrint(c.getColumnCombination()) + ": Support = XX";
     }
 }

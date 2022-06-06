@@ -58,17 +58,6 @@ public class ExactRunner extends BaseRunner {
 
         log.info("ResultSet with {} Codys:", this.getResultSet().size());
         for (CheckedColumnCombination c : this.getResultSet())
-            log.info("{}", c);
-    }
-
-    public static void main(String[] args) {
-        Configuration config = new Configuration();
-        config.setPath("/home/jonas/downloads/ncvoters.tsv");
-        config.setPath("/home/jonas/thesis/cd-generator/dataset_sparkasse/abschlaege.csv");
-        //config.setDelimiter('\t');
-        config.setNullValue("0");
-
-        ExactRunner runner = new ExactRunner(config);
-        runner.run();
+            log.info("{}", c.toString(preprocessor.getColumnIndexToNameMapping()));
     }
 }
