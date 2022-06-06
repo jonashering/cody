@@ -5,7 +5,7 @@ Cody is a data profiling algorithm to discover Complementation Dependencies, a p
 ### Installation
 ```bash
 # Use your preferred package manager to install a JDK and Maven
-# We're using Java 16 language features, so make sure your JDK supports this:
+# We recommend using Java 17 or later, however, Cody works with at least Java 8:
 $ java -version
 
 # Then build a fatjar

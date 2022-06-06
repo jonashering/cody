@@ -13,6 +13,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ExactRunner extends BaseRunner {
@@ -50,7 +51,7 @@ public class ExactRunner extends BaseRunner {
             this.resultSet.add(validator.checkColumnCombination(c));
 
         this.resultSet = this.resultSet.stream().map(c -> ColumnCombinationUtils.inflateDuplicateColumns(c,
-                preprocessor.getColumnIndexToDuplicatesMapping())).toList();
+                preprocessor.getColumnIndexToDuplicatesMapping())).collect(Collectors.toList());
         log.info("Candidate post-processing took: {} ms", postProcessingWatch.stop().elapsed(TimeUnit.MILLISECONDS));
 
         log.info("Complete approximate Cody algorithm took: {} ms",

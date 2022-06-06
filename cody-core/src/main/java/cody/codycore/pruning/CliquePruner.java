@@ -84,7 +84,7 @@ public class CliquePruner extends ComponentPruner {
                 .filter(i -> this.graph.get(vertex).get(i) >= this.configuration.getMinSupport() ||
                         this.graph.get(vertex).get(i) <= 1 - this.configuration.getMinSupport())
                 .boxed()
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private boolean cliqueHasTwoColours(final List<Integer> clique) {

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Slf4j
@@ -82,7 +83,7 @@ public class ComponentPruner {
                 .filter(i -> i != vertex)
                 .filter(i -> this.graph.get(vertex).get(i) >= this.configuration.getMinSupport())
                 .boxed()
-                .toList();
+                .collect(Collectors.toList());
     }
 
     protected void buildCandidates() {

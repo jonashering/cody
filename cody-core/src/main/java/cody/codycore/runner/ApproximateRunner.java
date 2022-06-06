@@ -64,7 +64,7 @@ public class ApproximateRunner extends BaseRunner {
             List<CheckedColumnCombination> checkedCurrentLevelCandidates = currentLevelCandidates
                     .parallelStream()
                     .map(validator::checkColumnCombination)
-                    .toList();
+                    .collect(Collectors.toList());
 
             checkedCurrentLevelCandidates
                     .stream()
@@ -87,7 +87,7 @@ public class ApproximateRunner extends BaseRunner {
 
         Stopwatch postProcessingWatch = Stopwatch.createStarted();
         this.resultSet = this.resultSet.stream().map(c -> ColumnCombinationUtils.inflateDuplicateColumns(c,
-                preprocessor.getColumnIndexToDuplicatesMapping())).toList();
+                preprocessor.getColumnIndexToDuplicatesMapping())).collect(Collectors.toList());
         log.info("Candidate post-processing took: {} ms", postProcessingWatch.stop().elapsed(TimeUnit.MILLISECONDS));
 
         log.info("Complete approximate Cody algorithm took: {} ms",
